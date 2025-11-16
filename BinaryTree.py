@@ -6,8 +6,27 @@ class BinaryTree():
 
     
 
+    def get_height(self, node):
+        if not node:
+            return 0
+        return node.height
+    
+    def get_balance(self, node):
+        return self.get_height(node.left) - self.get_height(node.right)
 
-          
+    def right_rotate(self,node):
+        x = node.left
+        t2 = x.right
+
+        x.right = node
+        node.left = t2
+
+        node.height = 1 + max(self.get_height(node.left),self.get_height(node.right))
+        x.height = 1 + max(self.get_height(x.left),self.get_height(x.right))
+         
+        
+        return x 
+        
     def pre_order(self):
         return self.recursive_pre(self.root)
 
