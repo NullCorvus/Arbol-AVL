@@ -6,8 +6,6 @@ class BinaryTree():
 
     def add(self, value):
         self.root = self._add_recursive(self.root, value)
-        print("Inorder:", self.in_order())
-        print("Preorder:", self.pre_order())
 
 
 
@@ -19,9 +17,10 @@ class BinaryTree():
 
         if value < node.value:
             node.left = self._add_recursive(node.left, value)
-        else:
+        elif value > node.value:
             node.right = self._add_recursive(node.right, value)
-
+        else:
+            return node 
         # Actualizar altura
         node.height = 1 + max(self.get_height(node.left),
                               self.get_height(node.right))
