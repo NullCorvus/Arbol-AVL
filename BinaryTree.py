@@ -4,7 +4,54 @@ class BinaryTree():
     def __init__(self):
         self.root = None
 
-    
+    def add(self, value):
+        self.root = self._add_recursive(self.root, value)
+        print("Inorder:", self.in_order())
+        print("Preorder:", self.pre_order())
+
+
+
+    def _add_recursive(self, node, value):
+
+        # Inserción BST normal
+        if not node:
+            return Treenode(value)
+
+        if value < node.value:
+            node.left = self._add_recursive(node.left, value)
+        else:
+            node.right = self._add_recursive(node.right, value)
+
+        # Actualizar altura
+        node.height = 1 + max(self.get_height(node.left),
+                              self.get_height(node.right))
+
+        # Factor de balance
+        balance = self.get_balance(node)
+
+        # --- CASOS DE DESBALANCE ---
+
+        # 1. Left Left
+        if balance > 1 and value < node.left.value:
+            return self.right_rotate(node)
+
+        # 2. Right Right
+        if balance < -1 and value > node.right.value:
+            return self.left_rotate(node)
+
+        # 3. Left Right
+        if balance > 1 and value > node.left.value:
+            node.left = self.left_rotate(node.left)
+            return self.right_rotate(node)
+
+        # 4. Right Left
+        if balance < -1 and value < node.right.value:
+            node.right = self.right_rotate(node.right)
+            return self.left_rotate(node)
+
+        return node
+
+
 
     def get_height(self, node):
         if not node:
@@ -26,6 +73,20 @@ class BinaryTree():
          
         
         return x 
+    
+    def left_rotate(self, node):
+        y = node.right
+        t2 = y.left
+
+        y.left = node
+        node.right = t2
+
+        node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+
+        return y
+
+
         
     def pre_order(self):
         return self.recursive_pre(self.root)

@@ -50,16 +50,15 @@ class TreeGUI(ctk.CTk):
             self.output_label.configure(text="Please enter some values first.")
             return
 
-        # Reset tree and insert new values
-        self.tree = BinaryTree()
         try:
             values = [int(x.strip()) for x in text.split(",") if x.strip()]
             for val in values:
-                self.tree.add(val)
+                self.tree.add(val)   # insertar sin reiniciar el árbol
             self.draw_tree()
             self.output_label.configure(text="Tree updated successfully!")
         except ValueError:
             self.output_label.configure(text="❌ Please enter only numbers separated by commas.")
+
 
     # --- Traversal display methods ---
     def show_preorder(self):
